@@ -27,9 +27,9 @@ namespace OK
                 {
                     //Check for team ID
                     Vector3 targetDirection = characterStats.transform.position - transform.position;
-                    enemyManager.viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
+                    float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
-                    if(enemyManager.viewableAngle > enemyManager.minimumDetectionAngle && enemyManager.viewableAngle < enemyManager.maximumDetectionAngle)
+                    if(viewableAngle > enemyManager.minimumDetectionAngle && viewableAngle < enemyManager.maximumDetectionAngle)
                     {
                         enemyManager.currentTarget = characterStats;
                     }

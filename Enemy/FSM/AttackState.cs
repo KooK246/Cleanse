@@ -13,7 +13,8 @@ namespace OK
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
-            enemyManager.viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
+            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+            float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
             if(enemyManager.isPerformingAction)
                 return combatStanceState;
@@ -21,14 +22,14 @@ namespace OK
             if(currentAttack != null)
             {
                 // If too close for current attack, get new attack
-                if(enemyManager.distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
+                if(distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
                 {
                     return this;
                 }
-                else if(enemyManager.distanceFromTarget < currentAttack.maximumDistanceNeededToAttack)
+                else if(distanceFromTarget < currentAttack.maximumDistanceNeededToAttack)
                 {
-                    if (enemyManager.viewableAngle <= currentAttack.maximumAttackAngle 
-                    && enemyManager.viewableAngle >= currentAttack.minimumAttackAngle)
+                    if (viewableAngle <= currentAttack.maximumAttackAngle 
+                    && viewableAngle >= currentAttack.minimumAttackAngle)
                     {
                         if (enemyManager.currentRecoveryTime <= 0 && enemyManager.isPerformingAction == false)
                         {
@@ -55,8 +56,8 @@ namespace OK
         private void GetNewAttack(EnemyManager enemyManager)
         { 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
-            enemyManager.viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
-            enemyManager.distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
+            float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
 
             int maxScore = 0;
           
@@ -64,11 +65,11 @@ namespace OK
             {
                 EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
-                if (enemyManager.distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack 
-                && enemyManager.distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
+                if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack 
+                && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
                 {
-                    if (enemyManager.viewableAngle <= enemyAttackAction.maximumAttackAngle
-                    && enemyManager.viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle
+                    && viewableAngle >= enemyAttackAction.minimumAttackAngle)
                     {
                         maxScore += enemyAttackAction.attackScore;
                     }
@@ -82,11 +83,11 @@ namespace OK
             {
                 EnemyAttackAction enemyAttackAction = enemyAttacks[i];
 
-                if (enemyManager.distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack
-                && enemyManager.distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
+                if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack
+                && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
                 {
-                    if (enemyManager.viewableAngle <= enemyAttackAction.maximumAttackAngle
-                    && enemyManager.viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle
+                    && viewableAngle >= enemyAttackAction.minimumAttackAngle)
                     {
                         if (currentAttack != null)
                             return;
