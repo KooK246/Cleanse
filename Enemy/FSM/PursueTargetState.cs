@@ -11,7 +11,7 @@ namespace OK
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             if(enemyManager.isPerformingAction)
-                // return this;
+                return this;
             
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             enemyManager.distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
