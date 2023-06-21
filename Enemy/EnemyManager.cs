@@ -18,7 +18,6 @@ namespace OK
 
         public bool isPerformingAction;
         public bool isInteracting;
-        public float distanceFromTarget;
         public float rotationSpeed = 15;
         public float maximumAttackRange = 2f;
 
