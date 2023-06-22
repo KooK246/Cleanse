@@ -6,17 +6,23 @@ namespace OK
 {
     public class WeaponSlotManager : MonoBehaviour
     {
+        PlayerManager playerManager;
+        QuickSlotsUI quickSlotsUI;
+        Animator animator;
+
+        public WeaponItem attackingWeapon;
+
         WeaponHolderSlot leftHandSlot;
         WeaponHolderSlot rightHandSlot;
 
         DamageCollider leftHandDamageCollider;
         DamageCollider rightHandDamageCollider;
 
-        Animator animator;
-
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            playerManager = GetComponentInParent<PlayerManager>();
+            quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
 
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
@@ -38,6 +44,7 @@ namespace OK
             {
                 leftHandSlot.LoadWeaponModel(weaponItem);
                 LoadLeftWeaponDamageCollider();
+                quickSlotsUI.UpdateWeaponQuickSlotsUI(weaponItem, true);
 
                 #region Handle Left Weapon Idle
                 if(weaponItem != null)
@@ -54,6 +61,7 @@ namespace OK
             {
                 rightHandSlot.LoadWeaponModel(weaponItem);
                 LoadRightWeaponDamageCollider();
+                quickSlotsUI.UpdateWeaponQuickSlotsUI(weaponItem, false);
 
                 #region Handle Right Weapon Idle
                 if(weaponItem != null)
@@ -80,23 +88,21 @@ namespace OK
             rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
         }
 
-        public void OpenRightHandDamageCollider()
+        public void OpenDamageCollider()
         {
-            rightHandDamageCollider.EnableDamageCollider();
-        }
-        
-        public void OpenLeftHandDamageCollider()
-        {
-            leftHandDamageCollider.EnableDamageCollider();
+            if (playerManager.isUsingRightHand)
+            {
+                rightHandDamageCollider.EnableDamageCollider();
+            }
+            else if (playerManager.isUsingLeftHand)
+            {
+                leftHandDamageCollider.EnableDamageCollider();
+            } 
         }
 
-        public void CloseRightHandDamageCollider()
+        public void CloseDamageCollider()
         {
             rightHandDamageCollider.DisableDamageCollider();
-        }
-
-        public void CloseLeftHandDamageCollider()
-        {
             leftHandDamageCollider.DisableDamageCollider();
         }
         #endregion

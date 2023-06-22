@@ -32,7 +32,7 @@ namespace OK
                 if (characterStats != null)
                 {
                     Vector3 targetDirection = characterStats.transform.position - enemyManager.transform.position;
-                    float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+                    float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
 
                     if (viewableAngle > enemyManager.minimumDetectionAngle
                     && viewableAngle < enemyManager.maximumDetectionAngle)

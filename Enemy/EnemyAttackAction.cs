@@ -14,7 +14,7 @@ namespace OK
         public float minimumAttackAngle = -35;
 
         public float minimumDistanceNeededToAttack = 0;
-        public float maximumDistanceNeededToAttack = 3;
+        public float maximumDistanceNeededToAttack = 1.5f;
     }
 }
 

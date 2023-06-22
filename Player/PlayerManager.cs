@@ -18,6 +18,8 @@ namespace OK
         public bool isInAir;
         public bool isGrounded;
         public bool canDoCombo;
+        public bool isUsingRightHand;
+        public bool isUsingLeftHand;
 
         public void Awake()
         {
@@ -37,14 +39,17 @@ namespace OK
 
             isInteracting = anim.GetBool("isInteracting");
             canDoCombo = anim.GetBool("canDoCombo");
+            isUsingRightHand = anim.GetBool("isUsingRightHand");
+            isUsingLeftHand = anim.GetBool("isUsingLeftHand");
             anim.SetBool("isInAir", isInAir);
-
-            inputHandler.TickInput(delta); 
+            
+            inputHandler.TickInput(delta);
 
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
             playerLocomotion.HandleJumping();
+            CheckForInteractableObject();
         }
 
         
@@ -66,10 +71,40 @@ namespace OK
             inputHandler.R_light_Input = false;
             inputHandler.R_heavy_Input = false;
             inputHandler.jump_Input = false;
+            inputHandler.interact_Input = false;
+            inputHandler.up_Input = false;
+            inputHandler.down_Input = false;
+            inputHandler.left_Input = false;
+            inputHandler.right_Input = false;
 
             if (isInAir)
             {
                 playerLocomotion.inAirTimer = playerLocomotion.inAirTimer + Time.deltaTime;
+            }
+        }
+
+        public void CheckForInteractableObject()
+        {
+            RaycastHit hit;
+
+            if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
+            {
+                if (hit.collider.tag == "Interactable")
+                {
+                    Interactable interactableObject = hit.collider.GetComponent<Interactable>();
+
+                    if (interactableObject != null)
+                    {
+                        string interactableText = interactableObject.interactableText;
+                        // Set UI text to object text
+                        // Set the pop up to true
+
+                        if (inputHandler.interact_Input)
+                        {
+                            hit.collider.GetComponent<Interactable>().Interact(this);
+                        }
+                    }
+                }
             }
         }
     }   

@@ -7,7 +7,6 @@ namespace OK
 {
     public class EnemyManager : MonoBehaviour
     {
-        EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyStats enemyStats;
         
@@ -21,7 +20,6 @@ namespace OK
         public float rotationSpeed = 15;
         public float maximumAttackRange = 2f;
 
-
         [Header("A.I. Settings")]
         public float detectionRadius = 20;
         public float maximumDetectionAngle = 50;
@@ -30,7 +28,6 @@ namespace OK
 
         private void Awake()
         {
-            enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
             enemyStats = GetComponent<EnemyStats>();
             enemyRigidBody = GetComponent<Rigidbody>();

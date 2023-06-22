@@ -12,23 +12,33 @@ namespace OK
         public float mouseX;
         public float mouseY;
 
+        #region Keybinds
         public bool shiftInput;
+        public bool interact_Input;
         public bool R_light_Input;
         public bool R_heavy_Input;
         public bool jump_Input;
+        public bool up_Input;
+        public bool down_Input;
+        public bool left_Input;
+        public bool right_Input;
+        Vector2 movementInput;
+        Vector2 cameraInput;
+        #endregion
 
+        #region Flags
         public bool rollFlag;
         public bool sprintFlag;
         public bool comboFlag;
         public float rollInputTimer;
+        #endregion
 
+        #region Imports
         PlayerControls inputActions;
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
-
-        Vector2 movementInput;
-        Vector2 cameraInput;
+        #endregion
 
         private void Awake()
         {
@@ -59,7 +69,9 @@ namespace OK
             MoveInput(delta);
             HandleRollInput(delta);
             HandleAttackInput(delta);
+            HandleQuickSlotsInput();
             HandleJumpInput();
+            HandleInteractableInput();
         }
 
         private void MoveInput(float delta)
@@ -122,6 +134,25 @@ namespace OK
         {
             inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
         }
-    
+
+        private void HandleQuickSlotsInput()
+        {
+            inputActions.PlayerQuickSlots.Right.performed += i => right_Input = true;
+            inputActions.PlayerQuickSlots.Left.performed += i => left_Input = true;
+
+            if (right_Input)
+            {
+                playerInventory.ChangeRightWeapon();
+            }
+            else if (left_Input)
+            {
+                playerInventory.ChangeLeftWeapon();
+            }
+        }
+
+        private void HandleInteractableInput()
+        {
+            inputActions.PlayerActions.Interact.performed += i => interact_Input = true;
+        }
     }
 }
