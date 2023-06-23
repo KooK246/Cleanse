@@ -9,6 +9,7 @@ namespace OK
         PlayerManager playerManager;
         QuickSlotsUI quickSlotsUI;
         Animator animator;
+        InputHandler inputHandler;
 
         public WeaponItem attackingWeapon;
 
@@ -23,6 +24,7 @@ namespace OK
             animator = GetComponent<Animator>();
             playerManager = GetComponentInParent<PlayerManager>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
+            inputHandler = GetComponentInParent<InputHandler>();
 
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
@@ -59,20 +61,28 @@ namespace OK
             }
             else
             {
-                rightHandSlot.LoadWeaponModel(weaponItem);
-                LoadRightWeaponDamageCollider();
-                quickSlotsUI.UpdateWeaponQuickSlotsUI(weaponItem, false);
-
-                #region Handle Right Weapon Idle
-                if(weaponItem != null)
+                if (inputHandler.twoHandFlag)
                 {
-                    animator.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
+                    // Move current left hand weapon to assigned slot
+                    animator.CrossFade(weaponItem.th_Idle, 0.2f);
                 }
                 else
                 {
-                    animator.CrossFade("Right Arm Empty", 0.2f);
+                    animator.CrossFade("Both Arms Empty", 0.2f);
+                    
+                    if(weaponItem != null)
+                    {
+                        animator.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
+                    }
+                    else
+                    {
+                        animator.CrossFade("Right Arm Empty", 0.2f);
+                    }
                 }
-                #endregion
+
+                rightHandSlot.LoadWeaponModel(weaponItem);
+                LoadRightWeaponDamageCollider();
+                quickSlotsUI.UpdateWeaponQuickSlotsUI(weaponItem, false);
             }
         }
 

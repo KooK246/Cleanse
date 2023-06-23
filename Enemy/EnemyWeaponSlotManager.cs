@@ -1,4 +1,4 @@
-/* using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +9,8 @@ namespace OK
         WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot leftHandSlot;
 
-        DamagerCollider leftHandDamageCollider;
-        DamagerCollider rightHandDamageCollider;
+        DamageCollider leftHandDamageCollider;
+        DamageCollider rightHandDamageCollider;
 
         private void Awake()
         {
@@ -50,11 +50,11 @@ namespace OK
         {
             if(isLeft)
             {
-                leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamagerCollider>();
+                leftHandDamageCollider = leftHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             }
             else
             {
-                rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamagerCollider>();
+                rightHandDamageCollider = rightHandSlot.currentWeaponModel.GetComponentInChildren<DamageCollider>();
             }
         }
 
@@ -68,4 +68,4 @@ namespace OK
             rightHandDamageCollider.DisableDamageCollider();
         }
     }
-}*/
+}

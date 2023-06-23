@@ -10,6 +10,9 @@ namespace OK
         Animator anim;
         CameraHandler cameraHandler;
         PlayerLocomotion playerLocomotion;
+        InteractableUI interactableUI;
+        public GameObject interactableUIGameObject;
+        public GameObject itemInteractableGameObject;
         
         public bool isInteracting;
 
@@ -31,6 +34,7 @@ namespace OK
             inputHandler = GetComponent<InputHandler>();
             anim = GetComponentInChildren<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
+            interactableUI = FindObjectOfType<InteractableUI>();
         }
 
         void Update()
@@ -96,14 +100,25 @@ namespace OK
                     if (interactableObject != null)
                     {
                         string interactableText = interactableObject.interactableText;
-                        // Set UI text to object text
-                        // Set the pop up to true
+                        interactableUI.interactableText.text = interactableText;
+                        interactableUIGameObject.SetActive(true);
 
                         if (inputHandler.interact_Input)
                         {
                             hit.collider.GetComponent<Interactable>().Interact(this);
                         }
                     }
+                }
+            }
+            else
+            {
+                if (interactableUIGameObject != null)
+                {
+                    interactableUIGameObject.SetActive(false);
+                }
+                if (itemInteractableGameObject != null && inputHandler.interact_Input)
+                {
+                    itemInteractableGameObject.SetActive(false);
                 }
             }
         }

@@ -15,6 +15,7 @@ namespace OK
         #region Keybinds
         public bool shiftInput;
         public bool interact_Input;
+        public bool dual_Wield_Input;
         public bool R_light_Input;
         public bool R_heavy_Input;
         public bool jump_Input;
@@ -28,6 +29,7 @@ namespace OK
 
         #region Flags
         public bool rollFlag;
+        public bool twoHandFlag;
         public bool sprintFlag;
         public bool comboFlag;
         public float rollInputTimer;
@@ -38,6 +40,7 @@ namespace OK
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        WeaponSlotManager weaponSlotManager;
         #endregion
 
         private void Awake()
@@ -45,6 +48,7 @@ namespace OK
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         }
 
         public void OnEnable()
@@ -54,6 +58,7 @@ namespace OK
                 inputActions = new PlayerControls();
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+                inputActions.PlayerActions.DualWield.performed += i => dual_Wield_Input = true;
             }
 
             inputActions.Enable();
@@ -72,6 +77,7 @@ namespace OK
             HandleQuickSlotsInput();
             HandleJumpInput();
             HandleInteractableInput();
+            HandleTwoHandInput();
         }
 
         private void MoveInput(float delta)
@@ -153,6 +159,25 @@ namespace OK
         private void HandleInteractableInput()
         {
             inputActions.PlayerActions.Interact.performed += i => interact_Input = true;
+        }
+
+        private void HandleTwoHandInput()
+        {
+            if (dual_Wield_Input)
+            {
+                dual_Wield_Input = false;
+                twoHandFlag = !twoHandFlag;
+
+                if (twoHandFlag)
+                {
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                }
+                else
+                {
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
+                }
+            }
         }
     }
 }
