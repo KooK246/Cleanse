@@ -8,12 +8,14 @@ namespace OK
     {
         AnimatorHandler animatorHandler;
         InputHandler inputHandler;
+        WeaponSlotManager weaponSlotManager;
         public string lastAttack;
 
         private void Awake()
         {
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
             inputHandler = GetComponent<InputHandler>();
+            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -21,9 +23,14 @@ namespace OK
             if(inputHandler.comboFlag)
             {
                 animatorHandler.anim.SetBool("canDoCombo", false);
-                if(lastAttack == weapon.OH_Light_Attack_01)
+
+                if (lastAttack == weapon.OH_Light_Attack_01)
                 {
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_02, true);
+                }
+                else if (lastAttack == weapon.TH_Light_Attack_01)
+                {
+                    animatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_02, true);
                 }
             }
             
@@ -31,14 +38,32 @@ namespace OK
 
         public void HandleLightAttack(WeaponItem weapon)
         {
-            animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_01, true);
-            lastAttack = weapon.OH_Light_Attack_01;
+            weaponSlotManager.attackingWeapon = weapon;
+            if (inputHandler.twoHandFlag)
+            {
+                animatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_01, true);
+                lastAttack = weapon.TH_Light_Attack_01;
+            }
+            else
+            {
+                animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_01, true);
+                lastAttack = weapon.OH_Light_Attack_01;
+            }   
         }
 
         public void HandleHeavyAttack(WeaponItem weapon)
         {
-            animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_01, true);
-            lastAttack = weapon.OH_Heavy_Attack_01;
+            weaponSlotManager.attackingWeapon = weapon;
+            if (inputHandler.twoHandFlag)
+            {
+                animatorHandler.PlayTargetAnimation(weapon.TH_Heavy_Attack_01, true);
+                lastAttack = weapon.TH_Heavy_Attack_01;
+            }
+            else
+            {
+                animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_01, true);
+                lastAttack = weapon.OH_Heavy_Attack_01;
+            }
         }
     }
 }

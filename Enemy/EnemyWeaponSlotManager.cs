@@ -1,4 +1,4 @@
-using System.Collections;
+/* using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,9 @@ namespace OK
 {
     public class EnemyWeaponSlotManager : MonoBehaviour
     {
+        PlayerManager playerManager;
+        Animator animator;
+
         WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot leftHandSlot;
 
@@ -68,4 +71,4 @@ namespace OK
             rightHandDamageCollider.DisableDamageCollider();
         }
     }
-}
+} */

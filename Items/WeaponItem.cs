@@ -19,6 +19,9 @@ namespace OK
         public string OH_Light_Attack_01;
         public string OH_Light_Attack_02;
         public string OH_Heavy_Attack_01;
+        public string TH_Light_Attack_01;
+        public string TH_Light_Attack_02;
+        public string TH_Heavy_Attack_01;
     }
 
 }

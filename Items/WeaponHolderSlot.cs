@@ -7,8 +7,10 @@ namespace OK
     public class WeaponHolderSlot : MonoBehaviour
     {
         public Transform parentOverride;
+        public WeaponItem currentWeapon;
         public bool isLeftHandSlot;
         public bool isRightHandSlot;
+        public bool isLeftHipSlot;
 
         public GameObject currentWeaponModel;
 
