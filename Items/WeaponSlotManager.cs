@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace OK
 {
     public class WeaponSlotManager : MonoBehaviour
     {
         PlayerManager playerManager;
+        PlayerStats playerStats;
         QuickSlotsUI quickSlotsUI;
         Animator animator;
         InputHandler inputHandler;
@@ -25,6 +27,7 @@ namespace OK
             animator = GetComponent<Animator>();
             playerManager = GetComponentInParent<PlayerManager>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
+            playerStats = GetComponentInParent<PlayerStats>();
             inputHandler = GetComponentInParent<InputHandler>();
 
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
@@ -121,8 +124,14 @@ namespace OK
 
         public void CloseDamageCollider()
         {
-            rightHandDamageCollider.DisableDamageCollider();
-            leftHandDamageCollider.DisableDamageCollider();
+            if (playerManager.isUsingRightHand)
+            {
+                rightHandDamageCollider.DisableDamageCollider();
+            }
+            else if (playerManager.isUsingLeftHand)
+            {
+                leftHandDamageCollider.DisableDamageCollider();
+            } 
         }
         #endregion
     }

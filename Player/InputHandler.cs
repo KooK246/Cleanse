@@ -41,6 +41,7 @@ namespace OK
         PlayerInventory playerInventory;
         PlayerManager playerManager;
         WeaponSlotManager weaponSlotManager;
+        AnimatorHandler animatorHandler;
         #endregion
 
         private void Awake()
@@ -49,6 +50,7 @@ namespace OK
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            animatorHandler = GetComponentInChildren<AnimatorHandler>();
         }
 
         public void OnEnable()
@@ -126,6 +128,13 @@ namespace OK
                 }
                 else
                 {
+                    if (playerManager.isInteracting)
+                        return;
+                    
+                    if (playerManager.canDoCombo)
+                        return;
+                    
+                    animatorHandler.anim.SetBool("isUsingRightHand", true);
                     playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
                 } 
             }

@@ -1,4 +1,4 @@
-/* using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,9 @@ namespace OK
     {
         PlayerManager playerManager;
         Animator animator;
+
+        public WeaponItem rightHandWeapon;
+        public WeaponItem leftHandWeapon;
 
         WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot leftHandSlot;
@@ -34,6 +37,11 @@ namespace OK
             }
         }
 
+        private void Start()
+        {
+            LoadWeaponsOnBothHands();
+        }
+
         public void LoadWeaponOnSlot(WeaponItem weapon, bool isLeft)
         {
             if (isLeft)
@@ -45,10 +53,23 @@ namespace OK
             else
             {
                 rightHandSlot.currentWeapon = weapon;
-                rightHandDamageCollider.LoadWeaponModel = weapon;
+                rightHandSlot.LoadWeaponModel(weapon);
                 LoadWeaponsDamageCollider(false);
             }
         }
+   
+        public void LoadWeaponsOnBothHands()
+        {
+            if (rightHandWeapon != null)
+            {
+                LoadWeaponOnSlot(rightHandWeapon, false);
+            }
+            if (leftHandWeapon != null)
+            {
+                LoadWeaponOnSlot(leftHandWeapon, true);
+            }
+        }
+
         public void LoadWeaponsDamageCollider(bool isLeft)
         {
             if(isLeft)
@@ -66,9 +87,19 @@ namespace OK
             rightHandDamageCollider.EnableDamageCollider();
         }
 
-        public void ClsoeDamageCollider()
+        public void CloseDamageCollider()
         {
             rightHandDamageCollider.DisableDamageCollider();
         }
+    
+        public void EnableCombo()
+        {
+            //anim.SetBool("canDoCombo", true);
+        }
+
+        public void DisableCombo()
+        {
+            //anim.SetBool("canDoCombo", false);
+        }
     }
-} */
+}

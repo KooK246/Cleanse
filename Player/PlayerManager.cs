@@ -48,7 +48,6 @@ namespace OK
             anim.SetBool("isInAir", isInAir);
             
             inputHandler.TickInput(delta);
-
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);

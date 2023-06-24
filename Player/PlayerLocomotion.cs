@@ -41,6 +41,9 @@ namespace OK
         float rotationSpeed = 10;
         [SerializeField]
         float fallingSpeed = 45;
+
+        public CapsuleCollider characterCollider;
+        public CapsuleCollider characterCollisionBlockerCollider;
         #endregion
 
         void Start()
@@ -55,6 +58,7 @@ namespace OK
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);
         }
 
 
