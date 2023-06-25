@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace OK
 {
-    public class EnemyManager : MonoBehaviour
+    public class EnemyManager : CharacterManager
     {
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyStats enemyStats;

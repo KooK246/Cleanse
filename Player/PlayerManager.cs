@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace OK
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : CharacterManager
     {
         InputHandler inputHandler;
         Animator anim;
         CameraHandler cameraHandler;
         PlayerLocomotion playerLocomotion;
+        PlayerStats playerStats;
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableGameObject;
@@ -19,6 +20,7 @@ namespace OK
         [Header("Player Flags")]
         public bool isSprinting;
         public bool isInAir;
+        public bool isBlocking;
         public bool isGrounded;
         public bool canDoCombo;
         public bool isUsingRightHand;
@@ -34,6 +36,7 @@ namespace OK
             inputHandler = GetComponent<InputHandler>();
             anim = GetComponentInChildren<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
+            playerStats = GetComponent<PlayerStats>();
             interactableUI = FindObjectOfType<InteractableUI>();
         }
 
@@ -45,7 +48,9 @@ namespace OK
             canDoCombo = anim.GetBool("canDoCombo");
             isUsingRightHand = anim.GetBool("isUsingRightHand");
             isUsingLeftHand = anim.GetBool("isUsingLeftHand");
+            anim.SetBool("isBlocking", isBlocking);
             anim.SetBool("isInAir", isInAir);
+            anim.SetBool("isDead", playerStats.isDead);
             
             inputHandler.TickInput(delta);
             playerLocomotion.HandleMovement(delta);

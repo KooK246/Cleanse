@@ -9,6 +9,7 @@ namespace OK
         AnimatorHandler animatorHandler;
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
+        PlayerManager playerManager;
         public string lastAttack;
 
         private void Awake()
@@ -16,6 +17,7 @@ namespace OK
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
             inputHandler = GetComponent<InputHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            playerManager = GetComponent<PlayerManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -65,5 +67,24 @@ namespace OK
                 lastAttack = weapon.OH_Heavy_Attack_01;
             }
         }
+
+        #region Defense actions
+        private void HandleBlockAction()
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if (playerManager.isBlocking)
+                return;
+
+            animatorHandler.PlayTargetAnimation("Block Start", false);
+            playerManager.isBlocking = true;
+        }
+
+        public void HandleQAction()
+        {
+            HandleBlockAction();
+        }
+        #endregion
     }
 }

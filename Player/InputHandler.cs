@@ -13,16 +13,18 @@ namespace OK
         public float mouseY;
 
         #region Keybinds
-        public bool shiftInput;
+        public bool shift_Input;
         public bool interact_Input;
         public bool dual_Wield_Input;
         public bool R_light_Input;
         public bool R_heavy_Input;
+        public bool block_Input;
         public bool jump_Input;
         public bool up_Input;
         public bool down_Input;
         public bool left_Input;
         public bool right_Input;
+        public bool lock_On_Input;
         Vector2 movementInput;
         Vector2 cameraInput;
         #endregion
@@ -32,6 +34,7 @@ namespace OK
         public bool twoHandFlag;
         public bool sprintFlag;
         public bool comboFlag;
+        public bool lockOnFlag;
         public float rollInputTimer;
         #endregion
 
@@ -40,6 +43,7 @@ namespace OK
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        CameraHandler cameraHandler;
         WeaponSlotManager weaponSlotManager;
         AnimatorHandler animatorHandler;
         #endregion
@@ -49,6 +53,7 @@ namespace OK
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
         }
@@ -61,6 +66,9 @@ namespace OK
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
                 inputActions.PlayerActions.DualWield.performed += i => dual_Wield_Input = true;
+                inputActions.PlayerActions.LockOn.performed += i => lock_On_Input = true;
+                inputActions.PlayerActions.Block.performed += i => block_Input = true;
+                inputActions.PlayerActions.Block.canceled += i => block_Input = false;
             }
 
             inputActions.Enable();
@@ -75,11 +83,12 @@ namespace OK
         {
             MoveInput(delta);
             HandleRollInput(delta);
-            HandleAttackInput(delta);
-            HandleQuickSlotsInput();
+            HandleCombatInput(delta);
             HandleJumpInput();
+            HandleQuickSlotsInput();
+            HandleLockOnInput();
             HandleInteractableInput();
-            HandleTwoHandInput();
+            HandleTwoHandInput(); 
         }
 
         private void MoveInput(float delta)
@@ -93,9 +102,9 @@ namespace OK
     
         private void HandleRollInput(float delta)
         {
-            shiftInput = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            shift_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
 
-            if (shiftInput)
+            if (shift_Input)
             {
                 rollInputTimer += delta;
                 sprintFlag = true;
@@ -112,7 +121,7 @@ namespace OK
             }
         }
 
-        private void HandleAttackInput(float delta)
+        private void HandleCombatInput(float delta)
         {
             inputActions.PlayerActions.RLight.performed += i => R_light_Input = true;
             inputActions.PlayerActions.RHeavy.performed += i => R_heavy_Input = true;
@@ -143,6 +152,15 @@ namespace OK
             {
                 playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
             }
+
+            if(block_Input)
+            {
+                playerAttacker.HandleQAction();
+            }
+            else
+            {
+                playerManager.isBlocking = false;
+            }
         }
 
         private void HandleJumpInput()
@@ -162,6 +180,26 @@ namespace OK
             else if (left_Input)
             {
                 playerInventory.ChangeLeftWeapon();
+            }
+        }
+
+        private void HandleLockOnInput()
+        {
+            if (lock_On_Input && lockOnFlag == false)
+            {   
+                lock_On_Input = false;
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.currentLockOnTarget == null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.nearestLockOnTarget;
+                    lockOnFlag = true;
+                }
+            }
+            else if (lock_On_Input && lockOnFlag == true)
+            {
+                lock_On_Input = false;
+                lockOnFlag = false;
+                cameraHandler.ClearLockOnTargets();
             }
         }
 
