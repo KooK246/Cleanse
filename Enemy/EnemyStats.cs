@@ -7,10 +7,16 @@ namespace OK
     public class EnemyStats : CharacterStats
     {
         Animator animator;
+        InputHandler inputHandler;
+        CameraHandler cameraHandler;
+
+        public GameObject enemy;
 
         private void Awake()
         {
             animator = GetComponentInChildren<Animator>();
+            inputHandler = FindObjectOfType<InputHandler>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
         }
 
         void Start()
@@ -40,6 +46,11 @@ namespace OK
                 currentHealth = 0;
                 animator.Play("Dead_01");
                 isDead = true;
+                Destroy(enemy, 1.2f);
+                if (inputHandler.lockOnFlag != false)
+                {
+                    cameraHandler.ClearLockOnTargets();
+                }
             }
         }
     }    

@@ -20,11 +20,15 @@ namespace OK
         public bool R_heavy_Input;
         public bool block_Input;
         public bool jump_Input;
+        public bool lock_On_Input;
+        public bool right_Lock_On_Input;
+        public bool left_Lock_On_Input;
+
         public bool up_Input;
         public bool down_Input;
         public bool left_Input;
         public bool right_Input;
-        public bool lock_On_Input;
+        
         Vector2 movementInput;
         Vector2 cameraInput;
         #endregion
@@ -69,6 +73,8 @@ namespace OK
                 inputActions.PlayerActions.LockOn.performed += i => lock_On_Input = true;
                 inputActions.PlayerActions.Block.performed += i => block_Input = true;
                 inputActions.PlayerActions.Block.canceled += i => block_Input = false;
+                inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Lock_On_Input = true;
+                inputActions.PlayerMovement.LockOnTargetLeft.performed += i => left_Lock_On_Input = true;
             }
 
             inputActions.Enable();
@@ -81,7 +87,7 @@ namespace OK
 
         public void TickInput(float delta)
         {
-            MoveInput(delta);
+            HandleMoveInput(delta);
             HandleRollInput(delta);
             HandleCombatInput(delta);
             HandleJumpInput();
@@ -91,7 +97,7 @@ namespace OK
             HandleTwoHandInput(); 
         }
 
-        private void MoveInput(float delta)
+        private void HandleMoveInput(float delta)
         {
             horizontal = movementInput.x;
             vertical = movementInput.y;
@@ -185,6 +191,8 @@ namespace OK
 
         private void HandleLockOnInput()
         {
+            cameraHandler.SetCameraHeight();
+
             if (lock_On_Input && lockOnFlag == false)
             {   
                 lock_On_Input = false;
@@ -195,11 +203,32 @@ namespace OK
                     lockOnFlag = true;
                 }
             }
+
             else if (lock_On_Input && lockOnFlag == true)
             {
                 lock_On_Input = false;
                 lockOnFlag = false;
                 cameraHandler.ClearLockOnTargets();
+            }
+
+            if (lockOnFlag && left_Lock_On_Input)
+            {
+                left_Lock_On_Input = false;
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.leftLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.leftLockTarget;
+                }                
+            }
+
+            else if (lockOnFlag && right_Lock_On_Input)
+            {
+                right_Lock_On_Input = false;
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.rightLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
+                }                
             }
         }
 
