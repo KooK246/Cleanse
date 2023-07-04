@@ -69,12 +69,12 @@ namespace OK
                 inputActions = new PlayerControls();
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+                inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Lock_On_Input = true;
+                inputActions.PlayerMovement.LockOnTargetLeft.performed += i => left_Lock_On_Input = true;
                 inputActions.PlayerActions.DualWield.performed += i => dual_Wield_Input = true;
                 inputActions.PlayerActions.LockOn.performed += i => lock_On_Input = true;
                 inputActions.PlayerActions.Block.performed += i => block_Input = true;
                 inputActions.PlayerActions.Block.canceled += i => block_Input = false;
-                inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Lock_On_Input = true;
-                inputActions.PlayerMovement.LockOnTargetLeft.performed += i => left_Lock_On_Input = true;
             }
 
             inputActions.Enable();
