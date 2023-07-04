@@ -7,5 +7,7 @@ namespace OK
     public class CharacterManager : MonoBehaviour
     {
         public Transform lockOnTransform;
+
+        public bool isBlocking;
     }   
 }

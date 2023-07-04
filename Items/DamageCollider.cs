@@ -34,9 +34,9 @@ namespace OK
             if(collision.tag == "Player")
             {
                 PlayerStats playerStats = collision.GetComponent<PlayerStats>();
+                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
-                
 
                 if(playerStats != null)
                 {

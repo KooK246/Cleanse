@@ -20,7 +20,6 @@ namespace OK
         [Header("Player Flags")]
         public bool isSprinting;
         public bool isInAir;
-        public bool isBlocking;
         public bool isGrounded;
         public bool canDoCombo;
         public bool isUsingRightHand;
