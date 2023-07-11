@@ -6,7 +6,7 @@ namespace OK
 {
     public class BlockingCollider : MonoBehaviour
     {
-        BoxCollider blockingCollider;
+        public BoxCollider blockingCollider;
 
         public float blockingPhysicalDamageAbsorption;
 

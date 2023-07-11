@@ -10,6 +10,7 @@ namespace OK
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
         PlayerManager playerManager;
+        PlayerEquipmentManager playerEquipmentManager;
         public string lastAttack;
 
         private void Awake()
@@ -18,6 +19,7 @@ namespace OK
             inputHandler = GetComponent<InputHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
             playerManager = GetComponent<PlayerManager>();
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -78,6 +80,7 @@ namespace OK
                 return;
 
             animatorHandler.PlayTargetAnimation("Block Start", false);
+            playerEquipmentManager.OpenBlockingCollider();
             playerManager.isBlocking = true;
         }
 

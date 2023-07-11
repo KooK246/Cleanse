@@ -29,7 +29,7 @@ namespace OK
             return maxHealth;
         }
         
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, string damageAnimation = "Damage_01")
         {
             if (isDead)
                 return;
@@ -37,7 +37,7 @@ namespace OK
 
             healthBar.SetCurrentHealth(currentHealth);
 
-            animatorHandler.PlayTargetAnimation("Damage_01", true);
+            animatorHandler.PlayTargetAnimation(damageAnimation, true);
 
             if(currentHealth <= 0)
             {

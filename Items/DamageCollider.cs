@@ -37,6 +37,20 @@ namespace OK
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
+                if (enemyCharacterManager != null)
+                {
+                    if (shield != null && enemyCharacterManager.isBlocking)
+                    {
+                        float physicalDamageAfterBlock = 
+                            currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
+
+                        if (playerStats != null)
+                        {
+                            playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Hit");
+                            return;
+                        }
+                    }
+                }
 
                 if(playerStats != null)
                 {

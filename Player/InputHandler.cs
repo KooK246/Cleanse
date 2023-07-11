@@ -50,6 +50,7 @@ namespace OK
         CameraHandler cameraHandler;
         WeaponSlotManager weaponSlotManager;
         AnimatorHandler animatorHandler;
+        BlockingCollider blockingCollider;
         #endregion
 
         private void Awake()
@@ -60,6 +61,7 @@ namespace OK
             cameraHandler = FindObjectOfType<CameraHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            blockingCollider = GetComponentInChildren<BlockingCollider>();
         }
 
         public void OnEnable()
@@ -166,6 +168,11 @@ namespace OK
             else
             {
                 playerManager.isBlocking = false;
+
+                if (blockingCollider.blockingCollider.enabled)
+                {
+                    blockingCollider.DisableBlockingCollider();
+                }
             }
         }
 
