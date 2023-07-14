@@ -11,6 +11,7 @@ namespace OK
         WeaponSlotManager weaponSlotManager;
         PlayerManager playerManager;
         PlayerEquipmentManager playerEquipmentManager;
+        PlayerInventory playerInventory;
         public string lastAttack;
 
         private void Awake()
@@ -19,7 +20,8 @@ namespace OK
             inputHandler = GetComponent<InputHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
             playerManager = GetComponent<PlayerManager>();
-            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+            playerEquipmentManager = GetComponentInChildren<PlayerEquipmentManager>();
+            playerInventory = GetComponent<PlayerInventory>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -71,6 +73,17 @@ namespace OK
         }
 
         #region Defense actions
+        public void HandleParryAction()
+        {
+            if (playerInventory.leftWeapon.isShieldWeapon)
+            {
+                PerformLeftWeaponArt(inputHandler.twoHandFlag);
+            }
+            else if (playerInventory.leftWeapon.isMeleeWeapon)
+            {
+                //perform light attack
+            }
+        }
         private void HandleBlockAction()
         {
             if (playerManager.isInteracting)
@@ -87,6 +100,23 @@ namespace OK
         public void HandleQAction()
         {
             HandleBlockAction();
+        }
+        #endregion
+
+        #region Attack actions
+        private void PerformLeftWeaponArt(bool isTwoHanding)
+        {
+            if (playerManager.isInteracting)
+                return;
+            
+            if (isTwoHanding)
+            {
+                //if we do be 2 handing, right hand art               
+            }
+            else
+            {
+                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_Art, true);
+            }
         }
         #endregion
     }

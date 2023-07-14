@@ -7,6 +7,7 @@ namespace OK
 {
     public class DamageCollider : MonoBehaviour
     {
+        public CharacterManager characterManager;
         Collider damageCollider;
 
         public int currentWeaponDamage = 25;
@@ -39,7 +40,13 @@ namespace OK
 
                 if (enemyCharacterManager != null)
                 {
-                    if (shield != null && enemyCharacterManager.isBlocking)
+                    if (enemyCharacterManager.isParrying)
+                    {
+                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
+                        return;
+                    }
+
+                    else if (shield != null && enemyCharacterManager.isBlocking)
                     {
                         float physicalDamageAfterBlock = 
                             currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
@@ -61,11 +68,26 @@ namespace OK
             if(collision.tag == "Enemy")
             {
                 EnemyStats enemyStats = collision.GetComponent<EnemyStats>();
+                CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
+                BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
-                if(enemyStats != null)
-                {
-                    enemyStats.TakeDamage(currentWeaponDamage);
-                }
+                if (enemyCharacterManager.isParrying)
+                    {
+                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
+                        return;
+                    }
+                
+                else if (shield != null && enemyCharacterManager.isBlocking)
+                    {
+                        float physicalDamageAfterBlock = 
+                            currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
+
+                        if (enemyStats != null)
+                        {
+                            enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Hit");
+                            return;
+                        }
+                    }
             }
         }
     }

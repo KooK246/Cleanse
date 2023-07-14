@@ -77,6 +77,7 @@ namespace OK
             inputHandler.sprintFlag = false;
             inputHandler.R_light_Input = false;
             inputHandler.R_heavy_Input = false;
+            inputHandler.parry_Input = false;
             inputHandler.jump_Input = false;
             inputHandler.interact_Input = false;
             inputHandler.up_Input = false;

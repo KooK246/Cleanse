@@ -109,6 +109,18 @@ namespace OK
             anim.SetBool("canDoCombo", false);
         }
 
+        public void EnableIsParrying()
+        {
+            playerManager.isParrying = true;
+        }
+
+        public void DisableIsParrying()
+        {
+            playerManager.isParrying = false;
+        }
+
+        /* Riposte */
+
         private void OnAnimatorMove()
         {
             if (playerManager.isInteracting == false)

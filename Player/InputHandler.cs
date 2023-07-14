@@ -19,6 +19,7 @@ namespace OK
         public bool R_light_Input;
         public bool R_heavy_Input;
         public bool block_Input;
+        public bool parry_Input;
         public bool jump_Input;
         public bool lock_On_Input;
         public bool right_Lock_On_Input;
@@ -77,6 +78,7 @@ namespace OK
                 inputActions.PlayerActions.LockOn.performed += i => lock_On_Input = true;
                 inputActions.PlayerActions.Block.performed += i => block_Input = true;
                 inputActions.PlayerActions.Block.canceled += i => block_Input = false;
+                inputActions.PlayerActions.Parry.performed += i => parry_Input = true;
             }
 
             inputActions.Enable();
@@ -159,6 +161,18 @@ namespace OK
             if(R_heavy_Input)
             {
                 playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+            }
+
+            if(parry_Input)
+            {
+                if (twoHandFlag)
+                {
+                    //Two handed special boi
+                }
+                else
+                {
+                    playerAttacker.HandleParryAction();
+                }
             }
 
             if(block_Input)
