@@ -6,7 +6,7 @@ namespace OK
 {
     public class EnemyStats : CharacterStats
     {
-        Animator animator;
+        EnemyAnimatorManager enemyAnimatorManager;
         InputHandler inputHandler;
         CameraHandler cameraHandler;
 
@@ -14,7 +14,7 @@ namespace OK
 
         private void Awake()
         {
-            animator = GetComponentInChildren<Animator>();
+            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
             inputHandler = FindObjectOfType<InputHandler>();
             cameraHandler = FindObjectOfType<CameraHandler>();
         }
@@ -38,13 +38,13 @@ namespace OK
             
             currentHealth = currentHealth - damage;
 
-            animator.Play("Damage_01");
+            enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if(currentHealth <= 0)
             {
                 // DEATH
                 currentHealth = 0;
-                animator.Play("Dead_01");
+                enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
                 isDead = true;
                 Destroy(enemy, 1.2f);
                 if (inputHandler.lockOnFlag != false)

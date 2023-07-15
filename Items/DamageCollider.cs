@@ -71,23 +71,31 @@ namespace OK
                 CharacterManager enemyCharacterManager = collision.GetComponent<CharacterManager>();
                 BlockingCollider shield = collision.transform.GetComponentInChildren<BlockingCollider>();
 
-                if (enemyCharacterManager.isParrying)
-                    {
-                        characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
-                        return;
-                    }
-                
-                else if (shield != null && enemyCharacterManager.isBlocking)
-                    {
-                        float physicalDamageAfterBlock = 
-                            currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
-
-                        if (enemyStats != null)
+                if (enemyCharacterManager != null)
+                {
+                    if (enemyCharacterManager.isParrying)
                         {
-                            enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Hit");
+                            characterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Parried", true);
                             return;
                         }
-                    }
+                
+                    else if (shield != null && enemyCharacterManager.isBlocking)
+                        {
+                            float physicalDamageAfterBlock = 
+                                currentWeaponDamage - (currentWeaponDamage * shield.blockingPhysicalDamageAbsorption) / 100;
+
+                            if (enemyStats != null)
+                            {
+                                enemyStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "Block Hit");
+                                return;
+                            }
+                        }
+                }
+
+                if (enemyStats != null)
+                {
+                    enemyStats.TakeDamage(currentWeaponDamage);
+                }
             }
         }
     }
