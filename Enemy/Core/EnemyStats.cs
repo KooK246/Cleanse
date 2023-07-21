@@ -7,6 +7,7 @@ namespace OK
     public class EnemyStats : CharacterStats
     {
         EnemyAnimatorManager enemyAnimatorManager;
+        public UIEnemyHealthBar enemyHealthBar;
         InputHandler inputHandler;
         CameraHandler cameraHandler;
 
@@ -23,6 +24,7 @@ namespace OK
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
+            enemyHealthBar.SetMaxHealth(maxHealth);
         }
 
         private int SetMaxHealthFromHealthLevel()
@@ -37,6 +39,7 @@ namespace OK
                 return;
             
             currentHealth = currentHealth - damage;
+            enemyHealthBar.SetHealth(currentHealth);
 
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
